@@ -12,7 +12,7 @@ void loop() {
 
 
 void tempSensorOverride(){
-  hello hello hello
+  hello
 }
 
 void motionSensorOverride(){
