@@ -2,7 +2,7 @@
 #include <LiquidCrystal.h>
 
 int statusLight;
-int LEDS[];
+int LEDS[]; 
 int tempSensorButton;
 int motionSensorButton;
 
