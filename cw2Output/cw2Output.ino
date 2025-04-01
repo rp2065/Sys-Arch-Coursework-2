@@ -3,6 +3,13 @@
 
 int LEDS = 7; 
 int motorPin = 6;
+float incoming;
+
+
+//Need to decide how to decipher the signal coming in and what it means
+//Also add functionality to lcd in a designated function
+//Function to turn fan/lights on
+//Function to turn fan/lights off?
 
 const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
@@ -40,10 +47,10 @@ void loop() {
       }
     }
     else{
-      if (incoming == "F") {
+      if (incoming == 'F') {
         fan(); //On no matter what
       }
-      if (incoming == "L") {
+      if (incoming == 'L') {
         lights(); //On no matter what
       }
     }
