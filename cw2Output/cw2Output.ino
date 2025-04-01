@@ -1,7 +1,6 @@
 
 #include <LiquidCrystal.h>
 
-int statusLight;
 int LEDS = 7; 
 int motorPin = 6;
 
@@ -10,12 +9,10 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 void setup() {
   
-  attachInterrupt(0, tempSensorOverride, FALLING);
-  attachInterrupt(1, motionSensorOverride, FALLING);
+  // Initialize serial communication
+  Serial.begin(9600);
 
   pinMode(LEDS, OUTPUT);
-
-  pinMode(statusLight, OUTPUT);
   pinMode(motorPin, OUTPUT);
 
   // set up the LCD's number of columns and rows:
@@ -31,30 +28,32 @@ void loop() {
   lcd.print(millis() / 1000);
   digitalWrite(LEDS, HIGH);
   digitalWrite(motorPin, HIGH);
+
+  if (Serial.available() > 0) {
+    incoming = Serial.read();
+    if (incoming // is float) {
+      if (incoming <= 5.0) {
+        lights(); //determine if to turn on or if already on
+      }
+      else{
+        fan(); //determine if to turn on or if already on
+      }
+    }
+    else{
+      if (incoming == "F") {
+        fan(); //On no matter what
+      }
+      if (incoming == "L") {
+        lights(); //On no matter what
+      }
+    }
+  }
 }
 
-void setFanSpeed(){
+void fan(){
   
 }
 
-void setLightBrightness(){
+void lights(){
   
-}
-
-void tempSensorOverride(){
-  static unsigned long lastDebounceTime = 0;
-
-  if (millis() - lastDebounceTime > 200) { // 200ms debounce time
-    //do something during interrupt
-  }
-  lastDebounceTime = millis();
-}
-
-void motionSensorOverride(){
-  static unsigned long lastDebounceTime = 0;
-
-  if (millis() - lastDebounceTime > 200) { // 200ms debounce time
-    //do something during interrupt
-  }
-  lastDebounceTime = millis();
 }
