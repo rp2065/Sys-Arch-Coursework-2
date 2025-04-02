@@ -3,7 +3,7 @@
 
 int LEDS = 7; 
 int motorPin = 6;
-float incoming;
+int incoming;
 
 
 //Need to decide how to decipher the signal coming in and what it means
@@ -32,35 +32,39 @@ void setup() {
 void loop() {
   lcd.setCursor(0, 1);
   // print the number of seconds since reset:
-  lcd.print(millis() / 1000);
-  digitalWrite(LEDS, HIGH);
-  digitalWrite(motorPin, HIGH);
+  //lcd.print(millis() / 1000);
+  //digitalWrite(LEDS, HIGH);
+  //digitalWrite(motorPin, HIGH);
 
   if (Serial.available() > 0) {
     incoming = Serial.read();
-    if (incoming // is float) {
-      if (incoming <= 5.0) {
-        lights(); //determine if to turn on or if already on
-      }
-      else{
-        fan(); //determine if to turn on or if already on
-      }
+    if (incoming == 'C'){
+      fanOn();
     }
-    else{
-      if (incoming == 'F') {
-        fan(); //On no matter what
-      }
-      if (incoming == 'L') {
-        lights(); //On no matter what
-      }
+    if (incoming == 'L'){
+      lightsOn();
+    }
+    if (incoming == 'D'){
+      lightsOff();
+    }
+    if (incoming == 'H'){
+      fanOff();
     }
   }
 }
 
-void fan(){
-  
+void fanOn(){
+  digitalWrite(motorPin, HIGH);
 }
 
-void lights(){
-  
+void fanOff(){
+  digitalWrite(motorPin, LOW);
+}
+
+void lightsOn(){
+  digitalWrite(LEDS, HIGH);
+}
+
+void lightsOff(){
+  digitalWrite(LEDS, LOW);
 }
