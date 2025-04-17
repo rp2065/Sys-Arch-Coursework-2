@@ -7,19 +7,13 @@ int lightValue;
 float tempC;
 
 
-//Got to check whether temp and light read exceeds threshold, if it does, send signal to turn fan/lights on
-//But should always send temp so can be displayed on lcd
-//Also need to decide how to transmit a signal for the interrupts so it forces the fan/lights on and keeps them on for a given period
+//how to keep fan on for a given period but allow everytyhing else to keep working in background.
 
  
 void setup() {
  
    // Initialize serial communication
    Serial.begin(9600);
-   
-   // Print header
-   //Serial.println("Light Level\tTemperature (C)\tTemperature (F)");
-   //Serial.println("----------------------------------------------");
 
   // Button interrupt setup
   attachInterrupt(0, tempSensorOverride, FALLING);
@@ -27,7 +21,6 @@ void setup() {
 }
  
 void loop() {
-  // put your main code here, to run repeatedly:
    
   // Read photosensor value (0-1023)
   lightValue = analogRead(photoSensorPin);
@@ -40,17 +33,11 @@ void loop() {
    
   // Convert voltage to temperature in Celsius (TMP36 has 10mV/°C scale with 500mV offset)
   tempC = (voltage - 0.5) * 100;
+  Serial.write(tempC);
+  delay(1000);
    
   // Convert Celsius to Fahrenheit
   float tempF = (tempC * 9.0 / 5.0) + 32.0;
-   
-  // Print all values to serial monitor
-  //Serial.print(lightValue);
-  //Serial.print("\t\t");
-  //Serial.print(tempC);
-  //Serial.print(" C\t\t");
-  //Serial.print(tempF);
-  //Serial.println(" F");
 
   checkLight();
   delay(2000);
@@ -84,7 +71,6 @@ void tempSensorOverride(){
 
   if (millis() - lastDebounceTime > 200) { // 200ms debounce time
     Serial.write("C");
-    
   }
   lastDebounceTime = millis();
 }
@@ -94,7 +80,7 @@ void lightSensorOverride(){
 
   if (millis() - lastDebounceTime > 200) { // 200ms debounce time
     Serial.write("L");
-    
+ 
   }
   lastDebounceTime = millis();
 }
