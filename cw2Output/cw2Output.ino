@@ -1,7 +1,7 @@
 
 #include <LiquidCrystal.h>
 
-int LEDS = 7; 
+int LEDS = 7;  
 int motorPin = 6;
 int incoming;
 
